@@ -1,0 +1,107 @@
+MySession is a premium, therapist-led therapy-practice companion: a minimalist, quiet, mobile-first app that organizes sessions, schedules, payments, and messaging between a therapist and their clients, designed to feel private, calm, and already in use. 
+
+You are building a responsive, mobile-first 'web demo' app using Next.js + TypeScript called “MySession (Therapist)”.
+
+Goal: a polished, dark-themed, mobile demo that feels real when swiping between screens, but uses NO backend and NO database. Everything is seeded data + in-memory state (optionally persisted locally with AsyncStorage for the demo only).
+
+Non-negotiables
+- Dark theme, emotionally calm, premium, minimal, “quiet luxury” UI. No bright whites. No harsh outlines. No loud colors.
+- Soft gradients in backgrounds. Cards are frosted/translucent with subtle blur, rounded corners, and gentle shadows.
+- Typography: modern, high-legibility. Use a single sans family; vary weight and size rather than style tricks.
+- Language: ordinary, non-clinical. Avoid psychoanalytic/clinical vocabulary. This is a professional practice tool with warmth, not medical bureaucracy.
+- Navigation: bottom tabs for primary areas, with stack navigation for details. Must feel fast and coherent.
+- Seeded data must make the app feel “already in use”.
+- Include a “Demo Scenarios” control that triggers pre-scripted changes (vacation shift, reschedule request, payment received) so a viewer experiences causality.
+- If anything is too complex, choose the simplest implementation that still looks good.
+
+Tech choices (Web / Next.js)
+- Next.js + TypeScript.
+- Tailwind CSS for styling.
+- Use CSS backdrop-filter / blur for frosted glass surfaces.
+- No backend and no database. All data is seeded local JSON + in-memory state (optionally LocalStorage for demo persistence).
+- Navigation: mobile-first bottom navigation with stacked detail pages; responsive so it works on desktop too.
+- Use in-app banners/toasts for notifications (no push).
+
+
+App structure / Screens (must implement all, but can keep Billing/Settings lighter if needed)
+1) Home (tab)
+   - Header: “MySession” and small subtitle like “Today, Tue” (date).
+   - “Today’s Sessions” list (3–6 items): time, client name, mode (in-person/remote), status badge (Confirmed / Needs reschedule / Paid).
+   - “Quick actions” row: “Add session”, “Block time”, “Send note”, “Create invoice” (these can route to lightweight modal screens or simply trigger demo toasts).
+   - A small “Practice pulse” card: unread items count (e.g., 2 reschedule requests, 1 invoice paid).
+
+2) Calendar (tab)
+   - A simple week strip at top (Mon–Sun). Tap a day to change the day view.
+   - Day timeline list below with sessions and blocks.
+   - “Block time” action: creates a block in the selected day.
+   - “Demo Scenarios” button on this screen too (see below), because it’s emotionally satisfying to watch schedule changes.
+
+3) Clients (tab)
+   - Search bar (local filter).
+   - List of clients with tiny status dots (e.g., Active / Paused).
+   - Tapping a client opens Client Detail.
+
+4) Client Detail (stack screen)
+   - Top: client name + next session time.
+   - Sections as cards:
+     - “Plan” (weekly / biweekly, preferred time window)
+     - “Sessions” (recent 3 + upcoming 2, with statuses)
+     - “Payments” (last invoice status)
+     - “Notes” (simple, non-clinical short notes; can be placeholders)
+   - Buttons: “Request reschedule”, “Send invoice”, “Add note” (these trigger demo state changes or open light modals).
+
+5) Billing (tab)
+   - Invoices list: client, amount, status (Draft / Sent / Paid / Overdue).
+   - A simple “Autopay” toggle per client (fake).
+   - A “Mark as paid (demo)” action for one invoice to show flow.
+   - When invoice marked paid, show a tasteful success state and optionally trigger a local notification: “Payment received”.
+
+6) Settings (tab)
+   - “Unlock with Face ID / Touch ID” toggle (demo only; if true, show a lock screen on app relaunch that requires a simulated biometric unlock button).
+   - “Demo Mode” section:
+     - “Reset demo data” button
+     - “Show guided overlay” toggle (optional)
+   - “Privacy” text: short, clear, non-legalistic.
+
+Core demo mechanic: Seed + Scenario Engine
+- On first launch, initialize a seeded practice:
+  Therapist: “Dr. Maya Chen” (or similarly real-world name).
+  Clients (6–10): culturally normal names, not jokey, no invented fantasy names.
+  Sessions: generate 2 weeks of sessions with a believable cadence (mix of weekly and biweekly).
+  Invoices: a few paid, a few sent, 1 overdue.
+
+- Provide a “Demo Scenarios” panel (a modal or bottom sheet) accessible from Home and Calendar:
+  Scenario A: “Therapist adds vacation (Jan 19–23)” -> mark affected sessions as “Needs reschedule”; add “reschedule suggestions” UI in session row.
+  Scenario B: “Client requests change (Alex wants Thu)” -> one upcoming session changes to “Request pending”; show a badge and a notification.
+  Scenario C: “Autopay succeeded” -> mark one invoice as Paid, show receipt UI, trigger local notification.
+  Scenario D: “Reset to baseline” -> restore seeded state.
+
+Design tokens (implement consistently)
+- Background: near-black gradient (deep navy/charcoal) with a faint vertical glow.
+- Surfaces: translucent cards with blur and subtle border highlight (very low opacity).
+- Primary accent: one restrained color used sparingly (e.g., muted cyan or muted violet) for active states and primary buttons.
+- Secondary accent: muted warm tone for warnings/overdue.
+- Spacing: generous padding, calm rhythm, no cramped lists.
+- Motion: subtle transitions (fade/slide) only; no bouncy playful animations.
+
+UI components to create (reusable)
+- FrostCard
+- QuietButton (primary/secondary/ghost)
+- StatusPill (Confirmed / Needs reschedule / Paid / Overdue / Draft)
+- ListRow (icon + title + subtitle + right accessory)
+- WeekStrip (for calendar)
+- DemoScenarioSheet
+
+Quality bar
+- Every screen must look finished: headers aligned, safe area respected, consistent typography, consistent card style.
+- No placeholder “Lorem ipsum”. Use short, believable English microcopy.
+- Must be runnable immediately with seeded data and navigation.
+
+Deliverables
+- Provide the complete project structure.
+- Include all screen files.
+- Ensure the app launches into Home with data visible.
+- Ensure the Demo Scenarios panel works and visibly changes calendar + lists.
+- If local notifications cannot be run in this environment, stub them with in-app banners/toasts but keep the interface ready.
+
+Build it now.
