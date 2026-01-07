@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { useSessions } from "@/hooks/use-sessions";
 import { useInvoices } from "@/hooks/use-invoices";
 import { 
@@ -17,13 +17,14 @@ import { Link } from "wouter";
 
 export default function Home() {
   const today = new Date();
-  const dateStr = today.toISOString();
   
-  const { data: sessions, isLoading: loadingSessions } = useSessions(dateStr);
+  const { data: sessions, isLoading: loadingSessions } = useSessions();
   const { data: invoices } = useInvoices();
 
   const unpaidInvoices = invoices?.filter(i => i.status !== "Paid" && i.status !== "Draft").length || 0;
   const draftInvoices = invoices?.filter(i => i.status === "Draft").length || 0;
+
+  const todaysSessions = (sessions ?? []).filter(s => isSameDay(new Date(s.time), today));
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -67,10 +68,10 @@ export default function Home() {
           </div>
           <h3 className="text-muted-foreground text-sm font-medium uppercase tracking-wider mb-2">Today's Schedule</h3>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-serif text-white">{sessions?.length || 0}</span>
+            <span className="text-3xl font-serif text-white">{todaysSessions.length}</span>
             <span className="text-sm text-muted-foreground">sessions scheduled</span>
           </div>
-           <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex gap-2">
              <span className="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded border border-emerald-500/20">
                On Track
              </span>
@@ -111,12 +112,12 @@ export default function Home() {
             [1, 2, 3].map((i) => (
               <div key={i} className="h-24 glass rounded-2xl animate-pulse" />
             ))
-          ) : sessions?.length === 0 ? (
+          ) : todaysSessions.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-white/10 rounded-2xl">
               <p className="text-muted-foreground">No sessions scheduled for today.</p>
             </div>
           ) : (
-            sessions?.map((session) => (
+            todaysSessions.map((session) => (
               <div 
                 key={session.id} 
                 className="glass rounded-2xl p-4 md:p-6 flex items-center gap-4 group hover:bg-white/5 transition-all cursor-pointer border-l-4 border-l-transparent hover:border-l-primary"

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { format, addDays, startOfWeek } from "date-fns";
+import { format, addDays, startOfWeek, isSameDay } from "date-fns";
 import { useSessions } from "@/hooks/use-sessions";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
@@ -11,7 +11,9 @@ export default function CalendarPage() {
   const startDate = startOfWeek(selectedDate, { weekStartsOn: 1 });
   const weekDays = Array.from({ length: 7 }).map((_, i) => addDays(startDate, i));
 
-  const { data: sessions } = useSessions(selectedDate.toISOString());
+  const { data: sessions } = useSessions();
+
+  const daySessions = (sessions ?? []).filter(s => isSameDay(new Date(s.time), selectedDate));
 
   // Hours for the timeline (9 AM to 6 PM)
   const hours = Array.from({ length: 10 }).map((_, i) => i + 9);
@@ -80,7 +82,7 @@ export default function CalendarPage() {
               </div>
               <div className="flex-1 border-t border-white/5 group-hover:border-white/10 transition-colors relative">
                 {/* Render sessions that start in this hour */}
-                {sessions?.filter(s => {
+                {daySessions.filter(s => {
                   const sHour = new Date(s.time).getHours();
                   return sHour === hour;
                 }).map(session => (
