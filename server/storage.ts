@@ -87,19 +87,19 @@ export class MemStorage implements IStorage {
     };
 
     // Past sessions
-    generateSession(1, -1, 10, "Completed");
-    generateSession(2, -2, 14, "Completed");
+    generateSession(1, -1, 9, "Completed");
+    generateSession(2, -2, 13, "Completed");
 
     // Today
-    generateSession(1, 0, 10, "Confirmed");
-    generateSession(3, 0, 14, "Confirmed");
-    generateSession(5, 0, 16, "Confirmed");
+    generateSession(1, 0, 9, "Confirmed");
+    generateSession(3, 0, 11, "Confirmed");
+    generateSession(5, 0, 15, "Confirmed");
 
     // Upcoming
-    generateSession(2, 1, 11, "Confirmed");
-    generateSession(6, 2, 9, "Confirmed");
-    generateSession(1, 7, 10, "Confirmed"); // Next week
-    generateSession(3, 7, 14, "Confirmed"); // Next week
+    generateSession(2, 1, 10, "Confirmed");
+    generateSession(6, 2, 14, "Confirmed");
+    generateSession(1, 7, 9, "Confirmed"); // Next week
+    generateSession(3, 7, 13, "Confirmed"); // Next week
 
     // Seed Invoices
     const generateInvoice = (clientId: number, amount: number, status: string, offsetDays: number) => {
